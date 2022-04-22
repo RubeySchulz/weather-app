@@ -20,7 +20,7 @@
         <div class="container-fluid">
             <div class="row">
                 <aside class="col-lg-3" id="search">
-                    <form>
+                    <form id="user-form">
                         <label class="h2" for="city-name">Search for a City:</label>
                         <input type="text" name="city-name" id="city-name" class="form-control">
                         <button class="btn btn-primary w-100" id="searchBtn">Search</button>
@@ -28,11 +28,12 @@
                 </aside>
                 <section class="col-lg-9 invisible" id="weatherInfo"> 
                     <div class="current-day">
-                        <!-- City Name (Date) (icon)
+                        <h1 id="current-title"> <img src="" id="current-icon"></h1>
+                        
                         Temp: 
                         Wind: 
                         Humidity: 
-                        UV Index:  -->
+                        UV Index: 
                     </div>
                     <div>
                         <h2>5-Day Forecast:</h2>
