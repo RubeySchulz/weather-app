@@ -1,0 +1,54 @@
+* {
+    font-family: 'Nanum Gothic', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(32,32,130,1) 64%, rgba(0,99,255,1) 100%);
+    margin: 10px;
+    padding: 10px 0;
+}
+
+header h1 {
+    font-family: 'Akshar', sans-serif;
+    font-size: 45px;
+    color: white;
+    text-align: center;
+}
+
+label {
+    font-family: 'Akshar', sans-serif;
+}
+
+.current-day {
+    border: 1px solid black;
+    padding: 5px;
+    margin-right: 32px;
+
+}
+
+.btn {
+    margin: 10px 0;
+}
+
+.col-3 {
+    margin: 0 0 0 10px;
+}
+
+.col-9 {
+    margin: 0 10px 0 0;
+}
+
+.fiveday {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 20px;
+}
+
+.fiveDayBox {
+    background-color: rgb(41, 42, 61);
+    flex: 1;
+    margin: 15px;
+}
