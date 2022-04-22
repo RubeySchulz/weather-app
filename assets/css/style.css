@@ -52,6 +52,11 @@ label {
     margin: 15px;
 }
 
+.fiveDayBox h2,
+.fiveDayBox  p {
+    color: white;
+}
+
 .current-day h1 {
     font-family: 'Akshar', sans-serif;
     font-size: 55px;

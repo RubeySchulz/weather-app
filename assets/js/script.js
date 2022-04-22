@@ -42,15 +42,13 @@ var getPosition = function(cityName){
 
 //converts the UNIX given from openweathermp to a readable date and returns it
 var timeConversion = function(unix){
-    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-    var date = new Date(unix * 1000);
-    var month = date.getMonth();
-    var day = "0" + date.getDay();
-    var year = "0" + date.getFullYear();
+    // moment.js item for unix time conversion
+    var date = moment.unix(unix).utc();
 
-    // Will display time in 10:30:23 format
-    var formattedTime = "(" + month + '/' + day + '/' + year + ")";
-    return formattedTime;
+    console.log(date)
+    var date = moment(date).format("M/D/YYYY");
+
+    return date;
 }
 
 //gets URL from openweathermap that corresponds with the icon code given
@@ -106,12 +104,21 @@ var currentWeather = function(data){
 
 //creates one card from the daily weather info
 var dayForecastCard = function(data, day){
+    var array = data.daily[day];
+    var cardId = "day" + day;
+    var date = timeConversion(array.dt);
 
+    var card = document.querySelector("#" + cardId);
+    
+    var title = document.createElement("h2");
+    title.textContent = date;
+
+    card.append(title);
 }
 
 //creates 5 cards going up one day each time
 var fiveDayForecast = function(data){
-    for(var i = 0; i < 5; i++){
+    for(var i = 1; i < 6; i++){
         dayForecastCard(data, i);
     }
 }
