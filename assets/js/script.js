@@ -1,6 +1,7 @@
 var userFormEl = document.querySelector("#user-form");
 var formInputEl = document.querySelector("#city-name");
 
+//handles button input
 var formHandler = function(event){
     event.preventDefault();
     var name = formInputEl.value.trim();
@@ -39,6 +40,7 @@ var getPosition = function(cityName){
     })
 }
 
+//converts the UNIX given from openweathermp to a readable date and returns it
 var timeConversion = function(unix){
     // multiplied by 1000 so that the argument is in milliseconds, not seconds.
     var date = new Date(unix * 1000);
@@ -51,6 +53,7 @@ var timeConversion = function(unix){
     return formattedTime;
 }
 
+//gets URL from openweathermap that corresponds with the icon code given
 var getIcon = function(icon){
     return "http://openweathermap.org/img/wn/" + icon + "@2x.png";
 }
@@ -103,7 +106,7 @@ var currentWeather = function(data){
 
 //creates one card from the daily weather info
 var dayForecastCard = function(data, day){
-    
+
 }
 
 //creates 5 cards going up one day each time
@@ -113,4 +116,4 @@ var fiveDayForecast = function(data){
     }
 }
 
-userFormEl.addEventListener("click", formHandler);
+userFormEl.addEventListener("submit", formHandler);
