@@ -20,6 +20,7 @@ var getWeatherData = function(data){
         response.json().then(function(data){
             if(response.ok){
                 currentWeather(data);
+                fiveDayForecast(data);
             } else {
                 alert("something went wrong");
             }
@@ -59,13 +60,57 @@ var currentWeather = function(data){
     var name = formInputEl.value.trim();
     var date = timeConversion(data.current.dt);
     var icon = getIcon(data.current.weather[0].icon);
-    
-    document.querySelector("#current-title").textContent = name + " " + date;
-    document.querySelector("#current-title").innerHTML += "<img src='" + icon + "' id='current-icon'>";
 
+    var temp = data.current.temp + "°F";
+    var wind = data.current.wind_speed + "MPH";
+    var humidity = data.current.humidity + "%";
+    var uv = data.current.uvi;
 
+    //grabs current-day div and clears previous content
+    var currentDay = document.querySelector("#current-day");
+    currentDay.innerHTML = "";
+
+    //unhides the main content
     document.querySelector("#weatherInfo").className = "col-lg-9";
 
+    //make the h1 title and change its name and icon
+    var title = document.createElement("h1");
+    title.textContent = name + " " + date;
+    title.innerHTML += "<img src='" + icon + "' id='current-icon'>";
+    
+    var tempEl = document.createElement("p");
+    tempEl.textContent = "Temp: " + temp;
+
+    var windEl = document.createElement("p");
+    windEl.textContent = "Wind: " + wind;
+
+    var humidityEl = document.createElement("p");
+    humidityEl.textContent = "Humidity: " + humidity;
+
+    var uvEl = document.createElement("p");
+    var uvColor = "";
+    if(uv < 3){
+        uvColor = "uv-index-good";
+    } else if(2.99 < uv < 6){
+        uvColor = "uv-index-moderate";
+    } else if(5.99 < uv){
+        uvColor = "uv-index-bad";
+    }
+    uvEl.innerHTML = "UV Index: <span class='uv-index " + uvColor + "'>" + uv + "</span>";
+
+    currentDay.append(title, tempEl, windEl, humidityEl, uvEl);
+}
+
+//creates one card from the daily weather info
+var dayForecastCard = function(data, day){
+    
+}
+
+//creates 5 cards going up one day each time
+var fiveDayForecast = function(data){
+    for(var i = 0; i < 5; i++){
+        dayForecastCard(data, i);
+    }
 }
 
 userFormEl.addEventListener("click", formHandler);
