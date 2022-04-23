@@ -1,5 +1,7 @@
 var userFormEl = document.querySelector("#user-form");
 var formInputEl = document.querySelector("#city-name");
+var cityHistory = document.querySelector("#history");
+var cities = [];
 
 //handles button input
 var formHandler = function(event){
@@ -7,6 +9,9 @@ var formHandler = function(event){
     var name = formInputEl.value.trim();
     
     if(name){
+        saveLocalStorage(name)
+
+        makeHistoryButtons();
         getPosition(name);
     }
 }
@@ -109,7 +114,9 @@ var dayForecastCard = function(data, day){
     var date = timeConversion(array.dt);
     var icon = getIcon(array.weather[0].icon)
 
+    //grab card and make sure its empty
     var card = document.querySelector("#" + cardId);
+    card.innerHTML = "";
     
     var title = document.createElement("h2");
     title.textContent = date;
@@ -135,4 +142,39 @@ var fiveDayForecast = function(data){
     }
 }
 
+var makeHistoryButtons = function(){
+    //clear history buttons
+    cityHistory.innerHTML = "";
+
+    //creates all history buttons
+    for(var i=0; i < cities.length; i++){
+        var button = document.createElement("button");
+        button.className = "btn btn-secondary w-100";
+        button.setAttribute("id", cities[i]);
+        button.textContent = (cities[i]);
+
+        cityHistory.append(button);
+    }
+}
+
+var getLocalStorage = function(){
+    var local = localStorage.getItem("cities");
+    if(local){
+        local = JSON.parse(local);
+        cities = local;
+    }
+}
+
+var saveLocalStorage = function(name){
+    if(cities.length === 10){
+        cities.pop();
+    }
+    cities.unshift(name);
+        var citiesParse = JSON.stringify(cities);
+        localStorage.setItem("cities", citiesParse);
+    
+}
+
+getLocalStorage();
+makeHistoryButtons();
 userFormEl.addEventListener("submit", formHandler);
