@@ -7,30 +7,46 @@ var cities = [];
 var formHandler = function(event){
     event.preventDefault();
     var name = formInputEl.value.trim();
+    name = name.substring(0, 1).toUpperCase() + name.substring(1);
     
     if(name){
+        //saves name to history
         saveLocalStorage(name)
 
+        //creates buttons and weather info
         makeHistoryButtons();
         getPosition(name);
     }
+    //clears form value
+    formInputEl.value = "";
+}
+
+//handles pressing a history button
+var historyFormHandler = function(event){
+    //grabs name of the city
+    var name = event.target.textContent;
+
+    //runs city name through weather info loop
+    getPosition(name);
 }
 
 //convert get position into weather information
-var getWeatherData = function(data){
+var getWeatherData = function(data, name){
     var lat = data.latitude;
     var lon = data.longitude;
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=&appid=aa58f17241844e64f81e30985d4f67a5&units=imperial";
 
+    //grabs weather info from API
     fetch(apiUrl).then(function(response){
         response.json().then(function(data){
             if(response.ok){
-                currentWeather(data);
+                //if everything is fine, runs weather loop
+                currentWeather(data, name);
                 fiveDayForecast(data);
             } else {
+                //otherwise outputs an alert
                 alert("something went wrong");
             }
-            console.log(data);
         });
     });
 }
@@ -40,7 +56,7 @@ var getPosition = function(cityName){
     .then(function(response){
         response.json().then(function(data){
             var array = data.data[0];
-            getWeatherData(array);
+            getWeatherData(array, cityName);
         })
     })
 }
@@ -49,10 +65,9 @@ var getPosition = function(cityName){
 var timeConversion = function(unix){
     // moment.js item for unix time conversion
     var date = moment.unix(unix).utc();
-
-    console.log(date)
-    var date = moment(date).format("M/D/YYYY");
-
+    //formats date
+    date = moment(date).format("M/D/YYYY");
+    //returns date
     return date;
 }
 
@@ -62,8 +77,7 @@ var getIcon = function(icon){
 }
 
 //create main jumbotron
-var currentWeather = function(data){
-    var name = formInputEl.value.trim();
+var currentWeather = function(data, name){
     var date = timeConversion(data.current.dt);
     var icon = getIcon(data.current.weather[0].icon);
 
@@ -94,6 +108,7 @@ var currentWeather = function(data){
     humidityEl.textContent = "Humidity: " + humidity;
 
     var uvEl = document.createElement("p");
+    //chooses color of UVI based on value
     var uvColor = "";
     if(uv < 3){
         uvColor = "uv-index-good";
@@ -104,6 +119,7 @@ var currentWeather = function(data){
     }
     uvEl.innerHTML = "UV Index: <span class='uv-index " + uvColor + "'>" + uv + "</span>";
 
+    //appends everything in order
     currentDay.append(title, tempEl, windEl, humidityEl, uvEl);
 }
 
@@ -118,6 +134,7 @@ var dayForecastCard = function(data, day){
     var card = document.querySelector("#" + cardId);
     card.innerHTML = "";
     
+    //creates all elements
     var title = document.createElement("h2");
     title.textContent = date;
     var iconEL = document.createElement("img");
@@ -131,7 +148,7 @@ var dayForecastCard = function(data, day){
     var humidityEl = document.createElement("p");
     humidityEl.textContent = "Humidity: " + array.humidity + "%";
 
-
+    //appends everything at once
     card.append(title, iconEL, tempEl, windEl, humidityEl);
 }
 
@@ -142,6 +159,7 @@ var fiveDayForecast = function(data){
     }
 }
 
+//creates all the history buttons based on local storage
 var makeHistoryButtons = function(){
     //clear history buttons
     cityHistory.innerHTML = "";
@@ -157,6 +175,7 @@ var makeHistoryButtons = function(){
     }
 }
 
+//grabs cities array value from localStorage
 var getLocalStorage = function(){
     var local = localStorage.getItem("cities");
     if(local){
@@ -165,16 +184,30 @@ var getLocalStorage = function(){
     }
 }
 
+//saves cities array value to local storage
 var saveLocalStorage = function(name){
+    //if the city name is already saved, cancels function
+    for(var i=0; i < cities.length; i++){
+        if(cities[i].toLowerCase() == name.toLowerCase()){
+            return;
+        }
+    }
+    //if there are already 10 saved cities, erases the oldest one and makes a new button
     if(cities.length === 10){
         cities.pop();
     }
+
+    //adds to beginning of array and saves to localStorage
     cities.unshift(name);
-        var citiesParse = JSON.stringify(cities);
-        localStorage.setItem("cities", citiesParse);
+    var citiesParse = JSON.stringify(cities);
+    localStorage.setItem("cities", citiesParse);
     
 }
-
+// Creates initial history buttons from localStorage
 getLocalStorage();
 makeHistoryButtons();
+
+//event listeners
 userFormEl.addEventListener("submit", formHandler);
+
+cityHistory.addEventListener("click", historyFormHandler);
