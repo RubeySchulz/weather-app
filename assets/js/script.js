@@ -107,13 +107,25 @@ var dayForecastCard = function(data, day){
     var array = data.daily[day];
     var cardId = "day" + day;
     var date = timeConversion(array.dt);
+    var icon = getIcon(array.weather[0].icon)
 
     var card = document.querySelector("#" + cardId);
     
     var title = document.createElement("h2");
     title.textContent = date;
+    var iconEL = document.createElement("img");
+    iconEL.setAttribute("src", icon);
+    var tempEl = document.createElement("p");
+    tempEl.textContent = "Temp: " + array.temp.day + "°F";
 
-    card.append(title);
+    var windEl = document.createElement("p");
+    windEl.textContent = "Wind: " + array.wind_speed + "MPH";
+
+    var humidityEl = document.createElement("p");
+    humidityEl.textContent = "Humidity: " + array.humidity + "%";
+
+
+    card.append(title, iconEL, tempEl, windEl, humidityEl);
 }
 
 //creates 5 cards going up one day each time

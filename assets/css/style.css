@@ -40,6 +40,11 @@ label {
     margin: 0 10px 0 0;
 }
 
+#user-form {
+    border-bottom: 2px solid black;
+    padding-bottom: 20px;
+}
+
 .fiveday {
     display: flex;
     flex-wrap: wrap;
@@ -49,12 +54,21 @@ label {
 .fiveDayBox {
     background-color: rgb(41, 42, 61);
     flex: 1;
-    margin: 15px;
+    padding: 10px 10px 30px 10px;
+    margin: 25px;
 }
 
 .fiveDayBox h2,
 .fiveDayBox  p {
     color: white;
+}
+
+.fiveDayBox p {
+    font-size: 22px;
+}
+
+.fiveDayBox img {
+    width: 75px;
 }
 
 .current-day h1 {
