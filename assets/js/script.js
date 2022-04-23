@@ -66,7 +66,7 @@ var timeConversion = function(unix){
     // moment.js item for unix time conversion
     var date = moment.unix(unix).utc();
     //formats date
-    date = moment(date).format("M/D/YYYY");
+    date = moment(date).format("(M/D/YYYY)");
     //returns date
     return date;
 }
